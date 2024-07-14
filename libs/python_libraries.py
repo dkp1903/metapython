@@ -2,18 +2,41 @@
 
 import asyncio
 
-async def fetch_data(url):
-    print(f"Fetching {url}")
+async def fetch_financial_data(row):
+    # Simulate an I/O-bound operation
     await asyncio.sleep(1)
-    return f"Data from {url}"
+    return row
+
+async def process_financial_data(row):
+    # Simulate processing the data
+    await asyncio.sleep(1)
+    processed_data = {**row, 'processed': True}
+    return processed_data
 
 async def main():
-    url = ["https://jsonplaceholder.typicode.com/todos/1", "https://jsonplaceholder.typicode.com/todos/2"]
-    tasks = [fetch_data(url) for url in urls]
-    results = await asyncio.gather(*tasks)
-    print(results)
+    tasks = []
+    for _, row in df.iterrows():
+        fetch_task = fetch_financial_data(row)
+        tasks.append(fetch_task)
+    
+    # Fetch all data concurrently
+    fetched_data = await asyncio.gather(*tasks)
+    
+    tasks = []
+    for data in fetched_data:
+        process_task = process_financial_data(data)
+        tasks.append(process_task)
+    
+    # Process all data concurrently
+    processed_data = await asyncio.gather(*tasks)
+    
+    print("Processed Data:")
+    for data in processed_data:
+        print(data)
 
+# Run the asyncio event loop
 asyncio.run(main())
+
 
 
 ## Pandas/Np
